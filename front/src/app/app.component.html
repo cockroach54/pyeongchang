@@ -1,0 +1,69 @@
+<!-- <nav class="nav nav-tabs" id="navTab" role="tablist" style="z-index:999">
+  <div class='tabWrapper'>
+    <a id="dashboard" class="nav-item nav-link active" data-toggle="tab" role="tab" aria-controls="nav-home" aria-expanded="true" routerLink="/dashboard">Dashboard</a>
+    <a id="textNews" class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-home" aria-expanded="true" routerLink="/textNews">텍스트뉴스</a>
+    <a id="cardNews" class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-profile" routerLink="/cardNews">카드뉴스</a>
+    <a id="movieNews" class="nav-item nav-link" data-toggle="tab" role="tab" aria-controls="nav-profile" routerLink="/movieNews">동영상</a>
+  </div>
+</nav> -->
+
+<nav>
+  <div class="nav-wrapper">
+    <!-- <a href="#dashboard" class="brand-logo">&nbsp;&nbsp;HCCLab</a> -->
+    <a href="#dashboard" class="brand-logo"><img class='logo' src="assets/logo.png"></a>
+    <a href="#" data-activates="mobile-demo" class="button-collapse"><i class="material-icons hamburger">menu</i></a>
+    <ul class="right hide-on-med-and-down">
+      <li><a id="dashboard" routerLink="/dashboard">홈</a></li>
+      <li><a id="textNews" routerLink="/textNews">텍스트뉴스</a></li>
+      <li><a id="cardNews" routerLink="/cardNews">카드뉴스</a></li>
+      <li><a id="movieNews" routerLink="/movieNews">동영상</a></li>    
+    </ul>
+    <ul class="side-nav" id="mobile-demo">
+      <li><a id="dashboard_m" class="mobile_ui" (click)="closeHamburger()" routerLink="/dashboard">홈</a></li>
+      <li><a id="textNews_m" class="mobile_ui" (click)="closeHamburger()" routerLink="/textNews">텍스트뉴스</a></li>
+      <li><a id="cardNews_m" class="mobile_ui" (click)="closeHamburger()" routerLink="/cardNews">카드뉴스</a></li>
+      <li><a id="movieNews_m" class="mobile_ui" (click)="closeHamburger()" routerLink="/movieNews">동영상</a></li>
+    </ul>    
+  </div>
+</nav>
+<!-- 나중에 슬라이더 하나 컴포넌트로 빼자 -->
+<div id="home">
+  <img id='home_bg' src="assets/home2.jpg">
+</div>
+  
+<!-- ROUTER -->
+<div class="row">
+  <article class="col s12 m8 offset-m2">
+    <router-outlet></router-outlet>
+  </article>
+</div>
+
+<!-- FOOTER -->
+<footer class="page-footer">
+  <div class="container">
+    <div class="row">
+      <div class="col l6 s12">
+        <h5 class="white-text">Made by HCCLab</h5>
+        <p class="grey-text text-lighten-4">
+            D-410, 145, Gwanggyo-ro, Yeongtong-gu, Suwon-si, Gyeonggi-do 16229, Republic of Korea
+        </p>
+      </div>
+      <div class="col l4 offset-l2 s12">
+        <h5 class="white-text">Links</h5>
+        <ul>
+          <li><a class="grey-text text-lighten-3" href="http://hcc.snu.ac.kr">HCCLab web site</a></li>
+          <!-- <li><a class="grey-text text-lighten-3" href="#!">Link 2</a></li> -->
+          <!-- <li><a class="grey-text text-lighten-3" href="#!">Link 3</a></li>
+          <li><a class="grey-text text-lighten-3" href="#!">Link 4</a></li> -->
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="footer-copyright">
+    <div class="container">
+    이 연구는 2017년도 정부(과학기술정보통신부)의 재원으로 정보통신기술진흥센터의 지원을 받아 수행중인 연구입니다 (No.2017-0-00693, 로봇 저널리즘 기반의 방송 뉴스 콘텐츠 제작 기술 개발)
+    <!-- <a class="grey-text text-lighten-4 right" href="#!">More Links</a> -->
+    </div>
+  </div>
+</footer>
+      

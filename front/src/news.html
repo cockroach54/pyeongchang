@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Pyeongchang2018_news</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.png">
+  
+  <script src="assets/jquery.min.js"></script>
+  <script src="assets/bxslider.js"></script>
+
+  <!--Import jQuery before materialize.js, bxslider는 jquery 3.3.1반드시필요-->
+  <!-- <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.min.js"></script> -->
+  <!--Import Google Icon Font-->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- Compiled and minified CSS -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <!-- Compiled and minified Javascript -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+  
+  <!-- for bxSlider for card news -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.css">
+  <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/bxslider/4.2.12/jquery.bxslider.min.js"></script> -->
+
+  <!-- for kakao link -->
+  <script src="//developers.kakao.com/sdk/js/kakao.min.js"></script>
+
+</head>
+<body>
+  <app-root></app-root>
+  <script>
+    console.log('contents page loaded...');
+    $(document).ready(function(){
+      $(".dropdown-button").dropdown();
+      $('.slider').bxSlider();
+      $('.modal').modal();
+    });
+  </script>
+
+<!-- <div style="text-align:center">
+  <a id="kakao-link-btn" href="javascript:;">
+    <img style="width:3rem" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
+  </a>
+</div> -->
+
+    <!-- <script type='text/javascript'>
+      //<![CDATA[
+        // // 사용할 앱의 JavaScript 키를 설정해 주세요.
+        Kakao.init('2c753f4f522f7fbbbad08e5568d9822a');
+        // // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
+        Kakao.Link.createDefaultButton({
+          container: '#kakao-link-btn',
+          objectType: 'feed',
+          content: {
+            title: '평창 동계올림픽 로봇 뉴스',
+            description: '#평창 #동계 #로봇 #HCCLab #AI #ROBOT',
+            imageUrl: 'http://koreabizwire.com/wp/wp-content/uploads/2017/01/12695156865_f899306b17_z.jpg',
+            // imageUrl: 'http://127.0.0.1:5000/assets/ex3.jpg',
+            link: {
+              mobileWebUrl: 'http://127.0.0.1:5000/contents/card',
+              webUrl: 'http://127.0.0.1:5000/contents/card'
+            }
+          },
+          social: {
+            likeCount: 286,
+            commentCount: 45,
+            sharedCount: 845
+          },
+          buttons: [
+            {
+              title: '뉴스 보기',
+              link: {
+                mobileWebUrl: 'http://127.0.0.1:5000/contents/text',
+                webUrl: 'http://127.0.0.1:5000/contents/text'
+              }
+            },
+            // {
+            //   title: '보노봇 보기',
+            //   link: {
+            //     mobileWebUrl: 'http://147.47.123.184:5910',
+            //     webUrl: 'http://147.47.123.184:5910'
+            //   }
+            // }
+          ]
+        });
+      //]]>
+    </script> -->
+</body>
+</html>

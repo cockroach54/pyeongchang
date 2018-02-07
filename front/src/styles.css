@@ -1,0 +1,20 @@
+/* You can add global styles to this file, and also import other style files */
+* {
+  /* border: 1px solid red; */
+  color: #555;
+  font-family: GillSans, Calibri, Trebuchet, sans-serif;
+}
+
+a{
+  cursor: pointer;
+}
+
+article{
+  /* width: 600px; */
+  text-align: center;
+}
+
+.side-nav{
+  width: 45%;
+  opacity: .9;
+}

@@ -1,0 +1,22 @@
+#home_bg{
+  width: 100%;
+  opacity: 0.7;
+}
+
+nav, footer{
+  background-color: #448aff;
+}
+
+#disqus{
+  background-color: #ccc;
+  height: 120px;
+}
+
+.hamburger{
+  color: #fff;
+}
+
+.logo{
+  height: 3rem;
+  vertical-align: middle;
+}

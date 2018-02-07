@@ -1,0 +1,13 @@
+#btnWrapper{
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem 0;
+}
+
+.btn{
+  padding: 0 1rem;
+}
+
+i{
+  color: #fff;
+}

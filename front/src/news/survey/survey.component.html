@@ -1,0 +1,149 @@
+<!-- Modal Structure -->
+<!-- <div class="container">
+<form ngNoForm action="http://127.0.0.1:5000/survey" method="post">
+  <div class="row">
+  
+    <div class="col s12">
+      <p>1. 이 뉴스는 신뢰감을 준다.</p>
+      <div class="qst">
+        <span *ngFor="let idx of [1,2,3,4,5]">
+          <input class="with-gap" name="q1" type="radio" id="test1-{{idx}}" value="{{idx}}"/>
+          <label for="test1-{{idx}}">{{idx}}</label>
+        </span>
+      </div>
+    </div>
+    <div class="col s12">
+      <p>2. 이 뉴스는 재미있다.</p>
+      <div class="qst">      
+        <span *ngFor="let idx of [1,2,3,4,5]">
+          <input class="with-gap" name="q2" type="radio" id="test2-{{idx}}" value="{{idx}}"/>
+          <label for="test2-{{idx}}">{{idx}}</label>
+        </span>
+      </div>
+    </div>
+    <div class="col s12">
+      <p>3. 이 뉴스는 흥미롭다.</p>
+      <div class="qst">      
+        <span *ngFor="let idx of [1,2,3,4,5]">
+          <input class="with-gap" name="q3" type="radio" id="test3-{{idx}}" value="{{idx}}"/>
+          <label for="test3-{{idx}}">{{idx}}</label>
+        </span>
+      </div>
+    </div>
+    <div class="col s12">
+      <p>4. 이 뉴스는 부정적이다.</p>
+      <div class="qst">
+        <span *ngFor="let idx of [1,2,3,4,5]">
+          <input class="with-gap" name="q4" type="radio" id="test4-{{idx}}" value="{{idx}}"/>
+          <label for="test4-{{idx}}">{{idx}}</label>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s12">
+      <input id="s1" type="text" class="validate" name="s1">
+      <label for="s1">5. 어떤 뉴스가 가장 인상이 깊었습니까?</label>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="input-field col s12">
+      <textarea id='s2' name="s2" class="materialize-textarea" data-length="100"></textarea>
+      <label for="s2">6. 자유롭게 의견을 적어주세요</label>
+    </div>
+  </div>
+
+  <div style="text-align:center">
+    <button class="btn waves-effect waves-light" type="submit">제출하기
+      <i class="material-icons right">send</i>
+    </button>
+  </div>
+
+</form>
+</div> -->
+<iframe name='ifrm' width='0' height='0' frameborder='0'></iframe>
+
+<div id="modal1" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <form ngNoForm name="survey" method="post">
+    <!-- <form ngNoForm name="survey" action="http://127.0.0.1:5000/survey" method="post" target="ifrm"> -->
+      <div class="row">
+      
+        <div class="col s12">
+          <p>1. 이 뉴스는 신뢰감을 준다.</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5]">
+              <input class="with-gap" name="q1" type="radio" id="test1-{{idx}}" value="{{idx}}"/>
+              <label for="test1-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>2. 이 뉴스는 재미있다.</p>
+          <div class="qst">      
+            <span *ngFor="let idx of [1,2,3,4,5]">
+              <input class="with-gap" name="q2" type="radio" id="test2-{{idx}}" value="{{idx}}"/>
+              <label for="test2-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>3. 이 뉴스는 흥미롭다.</p>
+          <div class="qst">      
+            <span *ngFor="let idx of [1,2,3,4,5]">
+              <input class="with-gap" name="q3" type="radio" id="test3-{{idx}}" value="{{idx}}"/>
+              <label for="test3-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>4. 이 뉴스는 부정적이다.</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5]">
+              <input class="with-gap" name="q4" type="radio" id="test4-{{idx}}" value="{{idx}}"/>
+              <label for="test4-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="input-field col s12">
+          <input id="s1" type="text" class="validate" name="s1">
+          <label for="s1">5. 어떤 뉴스가 가장 인상이 깊었습니까?</label>
+        </div>
+      </div>
+    
+      <div class="row">
+        <div class="input-field col s12">
+          <textarea id='s2' name="s2" class="materialize-textarea" data-length="100"></textarea>
+          <label for="s2">6. 자유롭게 의견을 적어주세요</label>
+        </div>
+      </div>
+    
+      <!-- <div style="text-align:center">
+        <button class="btn waves-effect waves-light" type="submit">제출하기
+          <i class="material-icons right">send</i>
+        </button>
+      </div> -->
+    
+    </form>
+  </div>
+
+
+  <div class="modal-footer">
+    <a class="modal-action modal-close waves-effect waves-green btn-flat "
+    (click)="submitSurvey()" >제출하기</a>
+  </div>
+</div>
+
+<!-- Modal Trigger -->
+<div style="text-align:center">
+  <a class="waves-effect waves-light btn" (click)="gotoWeb()">다른 뉴스 보기</a>
+  <a class="waves-effect waves-light btn modal-trigger" href="#modal1">설문 참여하기</a>
+  <a id="kakao-link-btn" href="javascript:;">
+    <img style="width:36px; vertical-align:bottom" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
+  </a>
+</div>

@@ -1,0 +1,28 @@
+<head>
+  <style>
+    body{
+      text-align: center;
+    }
+  </style>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+  <!-- Compiled and minified Javascript -->
+
+</head>
+<body>
+  <br/><br/><br/>
+  <h4>
+    설문에 참여해 주셔서 감사합니다.
+  </h4>
+  <br/>
+  <button id='btn' class="btn waves-effect waves-light">더 많은 뉴스 보러가기</button>
+  <script>
+    // redirect to home page
+    document.getElementById('btn').addEventListener('click', function(){
+      var port = window.location.port;
+      var host = (port=='4200')? 'http://127.0.0.1:5000' : 'http://'+window.location.host;
+    
+      window.location.href = host + '/';
+    });
+  </script>
+</body>
