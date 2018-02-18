@@ -11,3 +11,13 @@
 i{
   color: #fff;
 }
+
+.temp{
+  visibility: hidden;
+  height: 0;
+}
+
+.newsInfo{
+  text-align: center;
+  font-weight: bold;
+}

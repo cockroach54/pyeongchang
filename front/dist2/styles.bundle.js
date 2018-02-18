@@ -35,7 +35,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\n* {\n  /* border: 1px solid red; */\n  color: #555;\n  font-family: GillSans, Calibri, Trebuchet, sans-serif;\n}\na{\n  cursor: pointer;\n}\narticle{\n  /* width: 600px; */\n  text-align: center;\n}\n.side-nav{\n  width: 45%;\n  opacity: .9;\n}\n", ""]);
+exports.push([module.i, "/* You can add global styles to this file, and also import other style files */\r\n* {\r\n  /* border: 1px solid red; */\r\n  color: #555;\r\n  font-family: GillSans, Calibri, Trebuchet, sans-serif;\r\n}\r\na{\r\n  cursor: pointer;\r\n}\r\narticle{\r\n  /* width: 600px; */\r\n  text-align: center;\r\n}\r\n.side-nav{\r\n  width: 45%;\r\n  opacity: .9;\r\n}\r\n/* 스크롤바 스타일 지정 */\r\n::-webkit-scrollbar { \r\n  /* display: none;  */\r\n  width: 8px;\r\n  height: 4px; \r\n}\r\n::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment {display: none;}\r\n::-webkit-scrollbar-track {display: none; }\r\n::-webkit-scrollbar-thumb {background: #eee; border-radius: 8px; }", ""]);
 
 // exports
 

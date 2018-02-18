@@ -14,8 +14,6 @@ import { DisqusTextComponent } from './disqus-text.component';
 import { DisqusCardComponent } from './disqus-card.component';
 import { DisqusMovieComponent } from './disqus-movie.component';
 
-
-
 @NgModule({
   declarations: [
     AppComponent,

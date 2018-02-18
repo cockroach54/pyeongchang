@@ -2,3 +2,14 @@
   display: flex;
   justify-content: space-around;
 }
+
+.select{
+  display: flex;
+  justify-content: space-between;
+}
+
+pre{
+  color: #555;
+  font-family: GillSans, Calibri, Trebuchet, sans-serif;
+  font-size: .6em;
+}

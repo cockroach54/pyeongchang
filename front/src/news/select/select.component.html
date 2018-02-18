@@ -1,0 +1,24 @@
+<p style="font-weight:bold">
+  관심 선수를 선택해 주십시오.
+</p>
+<P style="text-align:left">
+  조금전 열린 경기에서 다음의 선수들이 경기를 펼쳤습니다. 관심 선수 한명을 선택해 주십시오. 해당 선수의 경기 결과에 대    한 뉴스를 생성해 드리겠습니다.
+</P>
+<!-- <div class="row">
+  <div class="col s4" *ngFor="let name of players; let i=index">
+    <div class="playerBtn">
+      {{name}}
+    </div>
+  </div>
+</div> -->
+<div class="btnWrapper">
+  <div class="playerBtn" *ngFor="let name of names; let i=index" (click)="setPlayer($event)">
+    <span>{{name}}</span>
+    <div class='flag'><img [src]="'assets/flags/'+players[name]+'.png'" style="width:100%"></div>
+  </div>
+</div>
+<!-- <button class="waves-effect waves-light btn" (click)="setPlayer()">set player</button>
+<button class="waves-effect waves-light btn" (click)="setGame()">set game</button>
+<button class="waves-effect waves-light btn" (click)="setGameKind()">set gameKind</button> -->
+<button class="waves-effect waves-light btn" (click)="goNext()">뉴스 생성하기</button>
+<button class="waves-effect waves-light btn" (click)="getNews()">api!</button>

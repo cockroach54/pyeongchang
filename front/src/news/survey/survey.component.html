@@ -6,7 +6,7 @@
     <div class="col s12">
       <p>1. 이 뉴스는 신뢰감을 준다.</p>
       <div class="qst">
-        <span *ngFor="let idx of [1,2,3,4,5]">
+        <span *ngFor="let idx of [1,2,3,4,5,6,7]">
           <input class="with-gap" name="q1" type="radio" id="test1-{{idx}}" value="{{idx}}"/>
           <label for="test1-{{idx}}">{{idx}}</label>
         </span>
@@ -15,7 +15,7 @@
     <div class="col s12">
       <p>2. 이 뉴스는 재미있다.</p>
       <div class="qst">      
-        <span *ngFor="let idx of [1,2,3,4,5]">
+        <span *ngFor="let idx of [1,2,3,4,5,6,7]">
           <input class="with-gap" name="q2" type="radio" id="test2-{{idx}}" value="{{idx}}"/>
           <label for="test2-{{idx}}">{{idx}}</label>
         </span>
@@ -24,7 +24,7 @@
     <div class="col s12">
       <p>3. 이 뉴스는 흥미롭다.</p>
       <div class="qst">      
-        <span *ngFor="let idx of [1,2,3,4,5]">
+        <span *ngFor="let idx of [1,2,3,4,5,6,7]">
           <input class="with-gap" name="q3" type="radio" id="test3-{{idx}}" value="{{idx}}"/>
           <label for="test3-{{idx}}">{{idx}}</label>
         </span>
@@ -33,7 +33,7 @@
     <div class="col s12">
       <p>4. 이 뉴스는 부정적이다.</p>
       <div class="qst">
-        <span *ngFor="let idx of [1,2,3,4,5]">
+        <span *ngFor="let idx of [1,2,3,4,5,6,7]">
           <input class="with-gap" name="q4" type="radio" id="test4-{{idx}}" value="{{idx}}"/>
           <label for="test4-{{idx}}">{{idx}}</label>
         </span>
@@ -70,56 +70,193 @@
     <form ngNoForm name="survey" method="post">
     <!-- <form ngNoForm name="survey" action="http://127.0.0.1:5000/survey" method="post" target="ifrm"> -->
       <div class="row">
+        <div class="col s12 select">
+<pre>
+전혀 동의하지
+않음
+</pre>
+<pre>뉴스종류: {{newsKind}}, 선수: {{info.player}}, 종목: {{info.game}}, 세부: {{info.gameKind}}</pre>
+<pre>
+전적으로 
+동의
+</pre>
+        </div>
       
         <div class="col s12">
-          <p>1. 이 뉴스는 신뢰감을 준다.</p>
+          <p>1. 이 뉴스는 편향되어 있다(biased)</p>
           <div class="qst">
-            <span *ngFor="let idx of [1,2,3,4,5]">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
               <input class="with-gap" name="q1" type="radio" id="test1-{{idx}}" value="{{idx}}"/>
               <label for="test1-{{idx}}">{{idx}}</label>
             </span>
           </div>
         </div>
         <div class="col s12">
-          <p>2. 이 뉴스는 재미있다.</p>
+          <p>2. 이 뉴스는 공정하다(fair)</p>
           <div class="qst">      
-            <span *ngFor="let idx of [1,2,3,4,5]">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
               <input class="with-gap" name="q2" type="radio" id="test2-{{idx}}" value="{{idx}}"/>
               <label for="test2-{{idx}}">{{idx}}</label>
             </span>
           </div>
         </div>
         <div class="col s12">
-          <p>3. 이 뉴스는 흥미롭다.</p>
+          <p>3. 이 뉴스는 객관적이다(objective)</p>
           <div class="qst">      
-            <span *ngFor="let idx of [1,2,3,4,5]">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
               <input class="with-gap" name="q3" type="radio" id="test3-{{idx}}" value="{{idx}}"/>
               <label for="test3-{{idx}}">{{idx}}</label>
             </span>
           </div>
         </div>
         <div class="col s12">
-          <p>4. 이 뉴스는 부정적이다.</p>
+          <p>4. 이 뉴스는 지루하다(boring)</p>
           <div class="qst">
-            <span *ngFor="let idx of [1,2,3,4,5]">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
               <input class="with-gap" name="q4" type="radio" id="test4-{{idx}}" value="{{idx}}"/>
               <label for="test4-{{idx}}">{{idx}}</label>
             </span>
           </div>
         </div>
+        <div class="col s12">
+          <p>5. 이 뉴스는 즐겁다 (enjoyable)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q5" type="radio" id="test5-{{idx}}" value="{{idx}}"/>
+              <label for="test5-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>6. 이 뉴스는 생생하다(lively)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q6" type="radio" id="test6-{{idx}}" value="{{idx}}"/>
+              <label for="test6-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>7. 이 뉴스는 흥미롭다(interesting)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q7" type="radio" id="test7-{{idx}}" value="{{idx}}"/>
+              <label for="test7-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>8. 이 뉴스는 만족스럽다(pleasing)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q8" type="radio" id="test8-{{idx}}" value="{{idx}}"/>
+              <label for="test8-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>9. 이 뉴스는 명료하다(clear)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q9" type="radio" id="test9-{{idx}}" value="{{idx}}"/>
+              <label for="test9-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>10. 이 뉴스는 일관되다(coherent)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q10" type="radio" id="test10-{{idx}}" value="{{idx}}"/>
+              <label for="test10-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>11. 이 뉴스는 포괄적이다(comprehensive)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q11" type="radio" id="test11-{{idx}}" value="{{idx}}"/>
+              <label for="test11-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>12. 이 뉴스는 간결하다(concise)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q12" type="radio" id="test12-{{idx}}" value="{{idx}}"/>
+              <label for="test12-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>13. 이 뉴스는 잘 쓰여졌다(well-written)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q13" type="radio" id="test13-{{idx}}" value="{{idx}}"/>
+              <label for="test13-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>14. 이 뉴스는 정확하다(accurate)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q14" type="radio" id="test14-{{idx}}" value="{{idx}}"/>
+              <label for="test14-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>15. 이 뉴스는 그럴듯하다(believable)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q15" type="radio" id="test15-{{idx}}" value="{{idx}}"/>
+              <label for="test15-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>16. 이 뉴스는 충격적이다(disturbing)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q16" type="radio" id="test16-{{idx}}" value="{{idx}}"/>
+              <label for="test16-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>17. 이 뉴스는 유익하다(informative)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q17" type="radio" id="test17-{{idx}}" value="{{idx}}"/>
+              <label for="test17-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
+        <div class="col s12">
+          <p>18. 이 뉴스는 선정적이다(sensationalistic)</p>
+          <div class="qst">
+            <span *ngFor="let idx of [1,2,3,4,5,6,7]">
+              <input class="with-gap" name="q18" type="radio" id="test18-{{idx}}" value="{{idx}}"/>
+              <label for="test18-{{idx}}">{{idx}}</label>
+            </span>
+          </div>
+        </div>
       </div>
     
-      <div class="row">
+      <!-- <div class="row">
         <div class="input-field col s12">
           <input id="s1" type="text" class="validate" name="s1">
           <label for="s1">5. 어떤 뉴스가 가장 인상이 깊었습니까?</label>
         </div>
-      </div>
+      </div> -->
     
       <div class="row">
         <div class="input-field col s12">
-          <textarea id='s2' name="s2" class="materialize-textarea" data-length="100"></textarea>
-          <label for="s2">6. 자유롭게 의견을 적어주세요</label>
+          <textarea id='s1' name="s1" class="materialize-textarea" data-length="100"></textarea>
+          <label for="s1">19. ※ 위 뉴스를 읽고 떠오른 생각이나 느낌을 최대한 자세하게 적어주십시오.</label>
         </div>
       </div>
     
@@ -134,16 +271,16 @@
 
 
   <div class="modal-footer">
-    <a class="modal-action modal-close waves-effect waves-green btn-flat "
-    (click)="submitSurvey()" >제출하기</a>
+    <a class="modal-action waves-effect waves-green btn-flat "
+    (click)="submitSurvey()" >제출하고 다음 뉴스보기</a>
   </div>
 </div>
 
 <!-- Modal Trigger -->
 <div style="text-align:center">
-  <a class="waves-effect waves-light btn" (click)="gotoWeb()">다른 뉴스 보기</a>
-  <a class="waves-effect waves-light btn modal-trigger" href="#modal1">설문 참여하기</a>
-  <a id="kakao-link-btn" href="javascript:;">
+  <!-- <a class="waves-effect waves-light btn" (click)="gotoWeb()">다른 뉴스 보기</a> -->
+  <a *ngIf="info.cursor>=2" class="waves-effect waves-light btn modal-trigger" href="#modal1" (click)="getInfoService()">설문 참여하기</a>
+  <a *ngIf="info.cursor>=2" id="kakao-link-btn" href="javascript:;">
     <img style="width:36px; vertical-align:bottom" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
   </a>
 </div>
