@@ -12,9 +12,4 @@ export class GuideComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  goNext(){
-    console.log('go to guide page!!');
-    InfoService.plusCursor();
-  }
 }

@@ -75,7 +75,7 @@
 전혀 동의하지
 않음
 </pre>
-<pre>뉴스종류: {{newsKind}}, 선수: {{info.player}}, 종목: {{info.game}}, 세부: {{info.gameKind}}</pre>
+<!-- <pre>뉴스종류: {{newsKind}}, 선수: {{info.player}}, 종목: {{info.game}}, 세부: {{info.gameKind}}</pre> -->
 <pre>
 전적으로 
 동의
@@ -256,15 +256,9 @@
       <div class="row">
         <div class="input-field col s12">
           <textarea id='s1' name="s1" class="materialize-textarea" data-length="100"></textarea>
-          <label for="s1">19. ※ 위 뉴스를 읽고 떠오른 생각이나 느낌을 최대한 자세하게 적어주십시오.</label>
+          <label for="s1" class="label_s1">19. ※ 위 뉴스를 읽고 떠오른 생각이나 느낌을 최대한 자세하게 적어주십시오.</label>
         </div>
       </div>
-    
-      <!-- <div style="text-align:center">
-        <button class="btn waves-effect waves-light" type="submit">제출하기
-          <i class="material-icons right">send</i>
-        </button>
-      </div> -->
     
     </form>
   </div>
@@ -279,8 +273,13 @@
 <!-- Modal Trigger -->
 <div style="text-align:center">
   <!-- <a class="waves-effect waves-light btn" (click)="gotoWeb()">다른 뉴스 보기</a> -->
-  <a *ngIf="info.cursor>=2" class="waves-effect waves-light btn modal-trigger" href="#modal1" (click)="getInfoService()">설문 참여하기</a>
-  <a *ngIf="info.cursor>=2" id="kakao-link-btn" href="javascript:;">
+  <a *ngIf="info.cursor>=2" class="waves-effect waves-light btn modal-trigger" 
+    href="#modal1" (click)="getInfoService()">설문 참여하기</a>
+  <a *ngIf="info.cursor>=1" class="waves-effect waves-light btn modal-trigger" 
+    (click)="goPrev()">이전</a>
+  <a class="waves-effect waves-light btn modal-trigger" 
+    (click)="goNext()">다음</a>
+  <a *ngIf="info.cursor==0" id="kakao-link-btn" href="javascript:;">
     <img style="width:36px; vertical-align:bottom" src="//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png"/>
   </a>
 </div>

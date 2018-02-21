@@ -17,7 +17,15 @@ i{
   height: 0;
 }
 
-.newsInfo{
+#newsInfo{
   text-align: center;
   font-weight: bold;
+  opacity: .8;
+}
+
+.myLogo{
+  height: 4rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }

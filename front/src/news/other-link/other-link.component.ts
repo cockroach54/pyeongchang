@@ -61,22 +61,31 @@ export class OtherLinkComponent implements OnInit {
       this.oldInfo.cursor = InfoService.cursor;
       this.info = InfoService;
       this.newsKind = this.info.newsList[this.info.cursor];
+      // newsKind 우리말로 변경
+      if(this.newsKind=='text') this.newsKind='선택-텍스트'
+      else if(this.newsKind=='text2') this.newsKind='종합-텍스트'
+      else if(this.newsKind=='card') this.newsKind='선택-카드'
+      else if(this.newsKind=='card2') this.newsKind='종합-카드'
+      else if(this.newsKind=='movie') this.newsKind='선택-동영상'
+      else if(this.newsKind=='movie2') this.newsKind='종합-동영상'
 
-      if(i>=InfoService.newsList.length){
+      if(i==InfoService.newsList.length){
         this.endNews();
         return;
       }
-      var newsKind = InfoService.newsList[i];
-      $('ul.tabs').tabs('select_tab', newsKind);
+
+      var newsKind_ = InfoService.newsList[i];
+      $('ul.tabs').tabs('select_tab', newsKind_);
       this.setProgressBar(i);
 
-      this.router.navigate(['contents/', newsKind, InfoService.game, InfoService.gameKind]);
+      this.router.navigate(['contents/', newsKind_, InfoService.game, InfoService.gameKind]);
     }
   }
 
   endNews(){
     // alert('마지막 뉴스입니다. 감사합니다.');
-    this.router.navigate(['contents/endPage']);    
+    document.getElementById('newsInfo').innerHTML = '';
+    this.router.navigate(['contents/endPage/'+InfoService.game+'/'+InfoService.gameKind]);    
   }
 }
 

@@ -13,3 +13,21 @@ pre{
   font-family: GillSans, Calibri, Trebuchet, sans-serif;
   font-size: .6em;
 }
+
+.modal{
+  width: 90% !important;
+}
+
+p{
+  padding: 0;
+}
+
+label{
+  padding-left: 1.6rem !important;
+  padding-right: .6rem !important;
+}
+
+.label_s1{
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}

@@ -12,7 +12,7 @@ export class NewsService{
   constructor(private http: Http){};
 
   // mysql에서 패스 가져오기
-  getPath(game: string, gameKind: string, player: string): Promise<object>{
+  public getPath(game: string, gameKind: string, player: string): Promise<object>{
     console.log("api/path api call");
     var query = 'player='+player+'&game='+game+'&gameKind='+gameKind;
     const url = this.host+'/api/path?'+query;

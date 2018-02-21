@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+declare var Materialize: any;
 
 @Injectable()
 export class InfoService {
@@ -17,7 +18,19 @@ export class InfoService {
 
   static plusCursor(){
     // if(this.cursor == this.newsList.length-1) return;
-    this.cursor++;
+    if(this.cursor==1 && !this.player){
+      var ment = '선수를 선택하지 않았습니다. 선수를 선택해 주세요.';
+      Materialize.toast(ment, 3000) // 3000 is the duration of the toast          
+      return;
+    }
+    if(this.cursor==this.newsList.length) alert('마지막 뉴스입니다. 감사합니다.');
+    else this.cursor++;
+    console.log('cursor: ', this.cursor);
+  }
+
+  static minusCursor(){
+    if(this.cursor == 0 ) alert('첫번째 탭입니다.');
+    else this.cursor--;
     console.log('cursor: ', this.cursor);
   }
 }

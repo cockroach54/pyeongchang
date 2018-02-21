@@ -10,6 +10,7 @@ declare var $: any;
 })
 export class CardDetailComponent implements OnInit {
   public filelist: string[] = [];
+  public newsKind: string;
   private port = window.location.port;
   constructor(private newsService: NewsService) { }
 
@@ -19,24 +20,28 @@ export class CardDetailComponent implements OnInit {
 
   // db에서 이미지주소 불러와서 슬라이더 돔엘리먼트 만드는 함수 필요
   ngAfterViewInit(){
+    this.newsKind = InfoService.newsList[InfoService.cursor];
+    // 개인/종합 뉴스 구분... 종합은 player==game name
+    var player = (this.newsKind[this.newsKind.length-1] == '2')? InfoService.game: InfoService.player;
+
     this.newsService.makeSourceList(
       InfoService.game,
       InfoService.gameKind,
-      InfoService.player,
+      player,
     ).then( res => {
       console.log(res);
       var templist = res as string[];
       var templist2 = [];
       templist.forEach( (f, i) => {
-        var path = 'newsdata/'+InfoService.game+'/'+InfoService.gameKind+'/'+InfoService.player+'/'+f;
+        var path = 'newsdata/'+InfoService.game+'/'+InfoService.gameKind+'/'+player+'/'+f;
         if(this.port=='4201') path = 'http://127.0.0.1:5000/' + path;
         templist2[i] = path;
       });
       templist2.sort(function(a,b){
         return a>b ? 1: -1;
       }); // 파일명소팅
-      this.filelist = templist2;
-
+      this.filelist = (templist2[templist2.length-1].indexOf('racevis')>-1)? templist2.slice(0,-1): templist2; // racevis.png 제외
+      
       setTimeout(this.makeCarousel, 500);
     });
   }

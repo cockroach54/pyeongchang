@@ -3,6 +3,7 @@
     width: 30%;
     /* background-color: #448aff; */
     background-color: #2CAFCF;
+    opacity: 1;
     color: #fff;
     cursor: pointer;
     margin: 5px;
@@ -13,12 +14,12 @@
     flex-direction: column;
 }
 
+.playerBtn:hover{
+    opacity: .8;
+}
+
 .btnWrapper{
     display: flex;
     flex-wrap: wrap;
     justify-content: space-around;
-}
-
-.flag{
-    width: 80%;
 }

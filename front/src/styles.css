@@ -9,6 +9,10 @@ a{
   cursor: pointer;
 }
 
+p{
+  padding: 0 .6rem;
+}
+
 article{
   /* width: 600px; */
   text-align: center;
@@ -28,3 +32,22 @@ article{
 ::-webkit-scrollbar-button:start:decrement, ::-webkit-scrollbar-button:end:increment {display: none;}
 ::-webkit-scrollbar-track {display: none; }
 ::-webkit-scrollbar-thumb {background: #eee; -webkit-border-radius: 8px; border-radius: 8px; }
+
+/* matrerial css 편집 */
+.btn{
+  background-color: #2CAFCF;
+}
+
+.btn:hover{
+  background-color: #2CAFCF;
+  opacity: .8;
+}
+
+.determinate{
+  background-color: #2CAFCF !important;
+}
+
+.progress{
+  background-color: #ddd;
+  opacity: .6;
+}

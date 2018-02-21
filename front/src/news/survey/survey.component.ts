@@ -26,6 +26,16 @@ export class SurveyComponent implements OnInit {
     // 설문지 모달 선언
     $('.modal').modal();
 
+    // $('.modal').modal({
+    //   dismissible: true, // Modal can be dismissed by clicking outside of the modal
+    //   opacity: .5, // Opacity of modal background
+    //   inDuration: 300, // Transition in duration
+    //   outDuration: 200, // Transition out duration
+    //   startingTop: '25%', // Starting top style attribute
+    //   endingTop: '25%', // Ending top style attribute
+    // });
+      
+
     // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
     Kakao.init('2c753f4f522f7fbbbad08e5568d9822a');
     Kakao.Link.createDefaultButton({
@@ -81,7 +91,7 @@ export class SurveyComponent implements OnInit {
     var queryString = $("form[name=survey]").serialize();
     // form 유효성검사
     if(queryString.split('&').length != 19){ // 문항이 총 19개
-      Materialize.toast('설문을 모두 작성해주세요.', 4000) // 4000 is the duration of the toast    
+      Materialize.toast('설문을 모두 작성해주세요.', 3000) // 3000 is the duration of the toast    
       console.log(queryString);    
       return;
     }
@@ -107,7 +117,7 @@ export class SurveyComponent implements OnInit {
       success: function(data){
           $("form[name=survey]").trigger('reset');
           // Materialize.toast(message, displayLength, className, completeCallback);
-          Materialize.toast('설문이 제출되었습니다.', 4000) // 4000 is the duration of the toast
+          Materialize.toast('설문이 제출되었습니다.', 3000) // 3000 is the duration of the toast
       }
     });
     // http://fruitdev.tistory.com/174
@@ -130,6 +140,16 @@ export class SurveyComponent implements OnInit {
     else p='/movieNews'
 
     window.location.href = host + p;
+  }
+
+  goNext(){
+    console.log('go to the next news!!');
+    InfoService.plusCursor();
+  }
+
+  goPrev(){
+    console.log('go to the previous news!!');
+    InfoService.minusCursor();
   }
 
   ngAfterContentChecked(){

@@ -76,7 +76,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/news/app.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class='row'>\r\n  <div class=\"col s12 m10 offset-m1 l8 offset-l2\">\r\n    <!-- BUTTONS -->\r\n    <app-other-link></app-other-link>\r\n    <br/>\r\n\r\n    <!-- ROUTER -->\r\n    <article>\r\n      <router-outlet ></router-outlet>\r\n    </article>\r\n    <br/>\r\n\r\n    <!-- SURVEY -->\r\n    <app-survey></app-survey>\r\n  </div>\r\n</div>"
+module.exports = "<div class='row'>\r\n  <div class=\"col s12 m10 offset-m1 l8 offset-l2\">\r\n    <!-- BUTTONS -->\r\n    <app-other-link></app-other-link>\r\n\r\n    <!-- ROUTER -->\r\n    <article>\r\n      <router-outlet ></router-outlet>\r\n    </article>\r\n    <br/>\r\n\r\n    <!-- SURVEY -->\r\n    <app-survey></app-survey>\r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -299,7 +299,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/news/card-detail/card-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n\r\n  <div class=\"bxslider\">\r\n    <div *ngFor=\"let file of filelist\">\r\n      <img [src]=\"file\">\r\n    </div>\r\n    <div><img src='/assets/ex1.jpg'></div>\r\n    <div><img src='/assets/ex2.jpg'></div>\r\n    <div><img src='/assets/ex3.jpg'></div>\r\n  </div>\r\n\r\n<!-- material css 슬라이더 -->\r\n<!-- <div class=\"carousel carousel-slider\">\r\n  <a class=\"carousel-item\" *ngFor=\"let file of filelist\">\r\n      <img [src]=\"file\">\r\n  </a>\r\n  <a class=\"carousel-item\" href=\"#one!\"><img src=\"/assets/ex1.jpg\"></a>\r\n  <a class=\"carousel-item\" href=\"#two!\"><img src=\"/assets/ex2.jpg\"></a>\r\n  <a class=\"carousel-item\" href=\"#three!\"><img src=\"/assets/ex3.jpg\"></a>\r\n</div> -->\r\n        \r\n</div>"
+module.exports = "<div class=\"container\">\r\n\r\n  <div class=\"bxslider\">\r\n    <div *ngFor=\"let file of filelist\">\r\n      <img [src]=\"file\">\r\n    </div>\r\n    <!-- <div><img src='/assets/ex1.jpg'></div>\r\n    <div><img src='/assets/ex2.jpg'></div>\r\n    <div><img src='/assets/ex3.jpg'></div> -->\r\n  </div>\r\n\r\n<!-- material css 슬라이더 -->\r\n<!-- <div class=\"carousel carousel-slider\">\r\n  <a class=\"carousel-item\" *ngFor=\"let file of filelist\">\r\n      <img [src]=\"file\">\r\n  </a>\r\n  <a class=\"carousel-item\" href=\"#one!\"><img src=\"/assets/ex1.jpg\"></a>\r\n  <a class=\"carousel-item\" href=\"#two!\"><img src=\"/assets/ex2.jpg\"></a>\r\n  <a class=\"carousel-item\" href=\"#three!\"><img src=\"/assets/ex3.jpg\"></a>\r\n</div> -->\r\n        \r\n</div>"
 
 /***/ }),
 
@@ -327,23 +327,30 @@ var CardDetailComponent = /** @class */ (function () {
     function CardDetailComponent(newsService) {
         this.newsService = newsService;
         this.filelist = [];
+        this.port = window.location.port;
     }
     CardDetailComponent.prototype.ngOnInit = function () {
     };
     // db에서 이미지주소 불러와서 슬라이더 돔엘리먼트 만드는 함수 필요
     CardDetailComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
-        this.newsService.makeSourceList(__WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].game, __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].gameKind, __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].player).then(function (res) {
+        this.newsKind = __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].newsList[__WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].cursor];
+        // 개인/종합 뉴스 구분... 종합은 player==game name
+        var player = (this.newsKind[this.newsKind.length - 1] == '2') ? __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].game : __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].player;
+        this.newsService.makeSourceList(__WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].game, __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].gameKind, player).then(function (res) {
             console.log(res);
             var templist = res;
             var templist2 = [];
             templist.forEach(function (f, i) {
-                templist2[i] = 'newsdata/' + __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].game + '/' + __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].gameKind + '/' + __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].player + '/' + f;
+                var path = 'newsdata/' + __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].game + '/' + __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].gameKind + '/' + player + '/' + f;
+                if (_this.port == '4201')
+                    path = 'http://127.0.0.1:5000/' + path;
+                templist2[i] = path;
             });
             templist2.sort(function (a, b) {
                 return a > b ? 1 : -1;
             }); // 파일명소팅
-            _this.filelist = templist2;
+            _this.filelist = (templist2[templist2.length - 1].indexOf('racevis') > -1) ? templist2.slice(0, -1) : templist2; // racevis.png 제외
             setTimeout(_this.makeCarousel, 500);
         });
     };
@@ -461,7 +468,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/news/guide/guide.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p style=\"font-weight:bold\">\n  뉴스로봇 기사와 설문이 도착했습니다.\n</p>\n<P style=\"text-align:left\">\n  뉴스로봇이 조금 전 끝난 경기에 대한 자동 기사 생성을 준비 중입니다. 뉴스로봇은 “내용”과 “형식”에 따라 다양한 기사를 생성합니다. “내용”의 경우 전체 경기 결과에 대한 “요약 기사” 와 사용자가 관심사에 따라 선택한 선수에 대한 “선택 기사”의 두 가지 종류가 있습니다. “형식”의 경우 “텍스트 뉴스” “카드 뉴스” “동영상 뉴스”의 세 가지 종류가 있습니다. 두 가지 내 용과 세 가지 형식을 조합한 여섯가지 기사가 생성되며 임의의 순서로 제공됩니다.\n</P>\n<br/>\n<img src=\"../guide.png\" style=\"width:100%\">\n<!-- <img src=\"/assets/guide.png\" style=\"width:100%\"> -->\n<button class=\"waves-effect waves-light btn\" (click)=\"goNext()\">다음으로</button>\n"
+module.exports = "<p style=\"font-weight:bold\">\n  뉴스로봇 기사와 설문이 도착했습니다.\n</p>\n<P style=\"text-align:left\">\n  뉴스로봇이 조금 전 끝난 경기에 대한 자동 기사 생성을 준비 중입니다. 뉴스로봇은 “내용”과 “형식”에 따라 다양한 기사를 생성합니다. “내용”의 경우 전체 경기 결과에 대한 “종합 기사” 와 사용자가 관심사에 따라 선택한 선수에 대한 “선택 기사”의 두 가지 종류가 있습니다. “형식”의 경우 “텍스트” “카드뉴스” “동영상”의 세 가지 종류가 있습니다. 두 가지 내 용과 세 가지 형식을 조합한 여섯가지 기사가 생성되며 임의의 순서로 제공됩니다.\n</P>\n<br/>\n<img src=\"/assets/guide.png\" style=\"width:80%\">\n<br/>"
 
 /***/ }),
 
@@ -471,7 +478,6 @@ module.exports = "<p style=\"font-weight:bold\">\n  뉴스로봇 기사와 설�
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return GuideComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__info_service__ = __webpack_require__("../../../../../src/news/info.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -482,15 +488,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
-
 var GuideComponent = /** @class */ (function () {
     function GuideComponent() {
     }
     GuideComponent.prototype.ngOnInit = function () {
-    };
-    GuideComponent.prototype.goNext = function () {
-        console.log('go to guide page!!');
-        __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].plusCursor();
     };
     GuideComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -515,6 +516,7 @@ var GuideComponent = /** @class */ (function () {
 var Info = /** @class */ (function () {
     function Info() {
         this.newsList = ['text', 'card', 'movie', 'text2', 'card2', 'movie2'];
+        // this.newsList = ['텍스트(선택)','카드(선택)','동영상(선택)','텍스트(전체)','카드(전체)','동영상(전체)'];
         this.cursor = 0;
     }
     return Info;
@@ -548,10 +550,26 @@ var InfoService = /** @class */ (function () {
     };
     InfoService.plusCursor = function () {
         // if(this.cursor == this.newsList.length-1) return;
-        this.cursor++;
+        if (this.cursor == 1 && !this.player) {
+            var ment = '선수를 선택하지 않았습니다. 선수를 선택해 주세요.';
+            Materialize.toast(ment, 3000); // 3000 is the duration of the toast          
+            return;
+        }
+        if (this.cursor == this.newsList.length)
+            alert('마지막 뉴스입니다. 감사합니다.');
+        else
+            this.cursor++;
+        console.log('cursor: ', this.cursor);
+    };
+    InfoService.minusCursor = function () {
+        if (this.cursor == 0)
+            alert('첫번째 탭입니다.');
+        else
+            this.cursor--;
         console.log('cursor: ', this.cursor);
     };
     InfoService.cursor = 0; // 현재 뉴스 종류 인덱스. 아래 newsList의 index
+    // static newsList: string[] = ['텍스트(선택)','카드(선택)','동영상(선택)','텍스트(전체)','카드(전체)','동영상(전체)'];
     InfoService.newsList = ['text', 'card', 'movie', 'text2', 'card2', 'movie2'];
     InfoService = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["A" /* Injectable */])(),
@@ -585,7 +603,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/news/movie-detail/movie-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n\r\n<video class=\"responsive-video\" controls>\r\n  <source src=\"assets/mv_sample.mp4\" type=\"video/mp4\">\r\n</video>\r\n\r\n</div>"
+module.exports = "<div class=\"container\">\r\n\r\n<video class=\"responsive-video\" controls>\r\n  <!-- <source src=\"assets/mv_sample.mp4\" type=\"video/mp4\"> -->\r\n</video>\r\n\r\n</div>"
 
 /***/ }),
 
@@ -595,6 +613,8 @@ module.exports = "<div class=\"container\">\r\n\r\n<video class=\"responsive-vid
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MovieDetailComponent; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__("../../../core/esm5/core.js");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__news_service__ = __webpack_require__("../../../../../src/news/news.service.ts");
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__info_service__ = __webpack_require__("../../../../../src/news/info.service.ts");
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -605,10 +625,33 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 
+
+
 var MovieDetailComponent = /** @class */ (function () {
-    function MovieDetailComponent() {
+    function MovieDetailComponent(newsService) {
+        this.newsService = newsService;
+        this.port = window.location.port;
     }
     MovieDetailComponent.prototype.ngOnInit = function () {
+    };
+    // db에서 동영상뉴스 패스 가져오기
+    MovieDetailComponent.prototype.ngAfterViewInit = function () {
+        var _this = this;
+        this.newsKind = __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].newsList[__WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].cursor];
+        // 개인/종합 뉴스 구분... 종합은 player==game name
+        var player = (this.newsKind[this.newsKind.length - 1] == '2') ? __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].game : __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].player;
+        this.newsService.makeSourceList(__WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].game, __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].gameKind, player, 'movie').then(function (res) {
+            console.log(res, typeof res);
+            var path = 'newsdata/' + __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].game + '/' + __WEBPACK_IMPORTED_MODULE_2__info_service__["a" /* InfoService */].gameKind + '/' + player + '/' + 'final.mp4';
+            // var path = 'newsdata/'+InfoService.game+'/'+InfoService.gameKind+'/'+InfoService.player+'/'+res[0];
+            if (_this.port == '4201')
+                path = 'http://127.0.0.1:5000/' + path;
+            console.log(path);
+            _this.moviePath = path;
+            // 비디오 태그속에 삽입
+            // 앵귤러 프로퍼티 바인딩하면 안먹는다...
+            document.querySelector('video').innerHTML = "\n        <source src=\"" + _this.moviePath + "\" type=\"video/mp4\">\n        ";
+        });
     };
     MovieDetailComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -616,7 +659,7 @@ var MovieDetailComponent = /** @class */ (function () {
             template: __webpack_require__("../../../../../src/news/movie-detail/movie-detail.component.html"),
             styles: [__webpack_require__("../../../../../src/news/movie-detail/movie-detail.component.css")]
         }),
-        __metadata("design:paramtypes", [])
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1__news_service__["a" /* NewsService */]])
     ], MovieDetailComponent);
     return MovieDetailComponent;
 }());
@@ -674,9 +717,10 @@ var NewsService = /** @class */ (function () {
     //               .toPromise()
     //               .then(res => res.json());
     //   }
-    NewsService.prototype.makeSourceList = function (game, gameKind, player) {
+    NewsService.prototype.makeSourceList = function (game, gameKind, player, isCard) {
+        if (isCard === void 0) { isCard = 'card'; }
         console.log("api/filelist api call");
-        var query = 'player=' + player + '&game=' + game + '&gameKind=' + gameKind;
+        var query = 'player=' + player + '&game=' + game + '&gameKind=' + gameKind + '&isCard=' + isCard;
         var url = this.host + '/api/filelist?' + query;
         return this.http.get(url)
             .toPromise()
@@ -711,7 +755,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "#btnWrapper{\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: justify;\r\n      -ms-flex-pack: justify;\r\n          justify-content: space-between;\r\n  padding: 0.5rem 0;\r\n}\r\n\r\n.btn{\r\n  padding: 0 1rem;\r\n}\r\n\r\ni{\r\n  color: #fff;\r\n}\r\n\r\n.temp{\r\n  visibility: hidden;\r\n  height: 0;\r\n}\r\n\r\n.newsInfo{\r\n  text-align: center;\r\n  font-weight: bold;\r\n}", ""]);
+exports.push([module.i, "#btnWrapper{\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: justify;\r\n      -ms-flex-pack: justify;\r\n          justify-content: space-between;\r\n  padding: 0.5rem 0;\r\n}\r\n\r\n.btn{\r\n  padding: 0 1rem;\r\n}\r\n\r\ni{\r\n  color: #fff;\r\n}\r\n\r\n.temp{\r\n  visibility: hidden;\r\n  height: 0;\r\n}\r\n\r\n#newsInfo{\r\n  text-align: center;\r\n  font-weight: bold;\r\n  opacity: .8;\r\n}\r\n\r\n.myLogo{\r\n  height: 4rem;\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-align: center;\r\n      -ms-flex-align: center;\r\n          align-items: center;\r\n  -webkit-box-pack: justify;\r\n      -ms-flex-pack: justify;\r\n          justify-content: space-between;\r\n}", ""]);
 
 // exports
 
@@ -724,7 +768,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/news/other-link/other-link.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"row\">\r\n<div id='btnWrapper' class=\"col s12 m10 offset-m1 l8 offset-l2\">\r\n  <ul class=\"tabs\">\r\n    <li class=\"tab col s4\" *ngFor=\"let news of newsList; let i=index\">\r\n      <a [href]=\"'#'+news\" (click)='myNavigation($event.target, i)'>{{news}}</a></li>\r\n  </ul>\r\n</div> \r\n<div [id]=\"news\" class=\"col s12 temp\">{{news}}</div>\r\n</div>\r\n\r\n<div style=\"clear:both\"></div>\r\n\r\n<div class=\"row\">\r\n  <div class=\"col s12 m10 offset-m1 l8 offset-l2\">\r\n    <div class=\"progress\">\r\n      <div class=\"determinate\" [style.width]=\"progressWidth+'%'\"></div>\r\n      <!-- <div class=\"determinate\" style=\"width: 30%\"></div> -->\r\n    </div>\r\n\r\n    <div class='newsInfo' *ngIf=\"info.cursor>1\">현재 {{newsKind}} 뉴스를 보고 있습니다.</div>\r\n  </div>\r\n</div>\r\n\r\n<!-- <div class=\"row\">\r\n  <p>현재 {{newsKind}} 뉴스를 보고 있습니다.</p>\r\n</div> -->"
+module.exports = "<!-- <div class=\"row\"> -->\r\n<div class=\"row\" style=\"display:none\">\r\n<div id='btnWrapper' class=\"col s12\">\r\n  <ul class=\"tabs tabs-fixed-width\">\r\n    <li class=\"tab\" *ngFor=\"let news of newsList; let i=index\">\r\n      <a [href]=\"'#'+news\" (click)='myNavigation($event.target, i)'>{{news}}</a></li>\r\n  </ul>\r\n</div> \r\n<div [id]=\"news\" class=\"col s12 temp\">{{news}}</div>\r\n</div>\r\n\r\n<div style=\"clear:both\"></div>\r\n\r\n<div class=\"row\">\r\n  <div class=\"col s12\">\r\n    <div class=\"progress\">\r\n      <div class=\"determinate\" [style.width]=\"progressWidth+'%'\"></div>\r\n    </div>\r\n\r\n    <div class=\"myLogo\">\r\n      <img src=\"assets/NewsRobot_new.png\" style=\"height:100%\">\r\n      <div id='newsInfo' *ngIf=\"info.cursor>1\">현재 [{{newsKind}}] 뉴스를 보고 있습니다.</div>\r\n    </div>\r\n    \r\n  </div>\r\n</div>"
 
 /***/ }),
 
@@ -790,19 +834,33 @@ var OtherLinkComponent = /** @class */ (function () {
             this.oldInfo.cursor = __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].cursor;
             this.info = __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */];
             this.newsKind = this.info.newsList[this.info.cursor];
-            if (i >= __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].newsList.length) {
+            // newsKind 우리말로 변경
+            if (this.newsKind == 'text')
+                this.newsKind = '선택-텍스트';
+            else if (this.newsKind == 'text2')
+                this.newsKind = '종합-텍스트';
+            else if (this.newsKind == 'card')
+                this.newsKind = '선택-카드';
+            else if (this.newsKind == 'card2')
+                this.newsKind = '종합-카드';
+            else if (this.newsKind == 'movie')
+                this.newsKind = '선택-동영상';
+            else if (this.newsKind == 'movie2')
+                this.newsKind = '종합-동영상';
+            if (i == __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].newsList.length) {
                 this.endNews();
                 return;
             }
-            var newsKind = __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].newsList[i];
-            $('ul.tabs').tabs('select_tab', newsKind);
+            var newsKind_ = __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].newsList[i];
+            $('ul.tabs').tabs('select_tab', newsKind_);
             this.setProgressBar(i);
-            this.router.navigate(['contents/', newsKind, __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].game, __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].gameKind]);
+            this.router.navigate(['contents/', newsKind_, __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].game, __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].gameKind]);
         }
     };
     OtherLinkComponent.prototype.endNews = function () {
         // alert('마지막 뉴스입니다. 감사합니다.');
-        this.router.navigate(['contents/endPage']);
+        document.getElementById('newsInfo').innerHTML = '';
+        this.router.navigate(['contents/endPage/' + __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].game + '/' + __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].gameKind]);
     };
     OtherLinkComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -828,7 +886,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".playerBtn{\r\n    height: 8rem;\r\n    width: 30%;\r\n    background-color: #448aff;\r\n    color: #fff;\r\n    cursor: pointer;\r\n    margin: 5px;\r\n}\r\n\r\n.btnWrapper{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -ms-flex-wrap: wrap;\r\n        flex-wrap: wrap;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n}", ""]);
+exports.push([module.i, ".playerBtn{\r\n    height: 8rem;\r\n    width: 30%;\r\n    /* background-color: #448aff; */\r\n    background-color: #2CAFCF;\r\n    opacity: 1;\r\n    color: #fff;\r\n    cursor: pointer;\r\n    margin: 5px;\r\n\r\n    display: -webkit-box;\r\n\r\n    display: -ms-flexbox;\r\n\r\n    display: flex;\r\n    -webkit-box-align: center;\r\n        -ms-flex-align: center;\r\n            align-items: center;\r\n    -webkit-box-pack: center;\r\n        -ms-flex-pack: center;\r\n            justify-content: center;\r\n    -webkit-box-orient: vertical;\r\n    -webkit-box-direction: normal;\r\n        -ms-flex-direction: column;\r\n            flex-direction: column;\r\n}\r\n\r\n.playerBtn:hover{\r\n    opacity: .8;\r\n}\r\n\r\n.btnWrapper{\r\n    display: -webkit-box;\r\n    display: -ms-flexbox;\r\n    display: flex;\r\n    -ms-flex-wrap: wrap;\r\n        flex-wrap: wrap;\r\n    -ms-flex-pack: distribute;\r\n        justify-content: space-around;\r\n}\r\n", ""]);
 
 // exports
 
@@ -841,7 +899,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/news/select/select.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<p style=\"font-weight:bold\">\n  관심 선수를 선택해 주십시오.\n</p>\n<P style=\"text-align:left\">\n  조금전 열린 경기에서 다음의 선수들이 경기를 펼쳤습니다. 관심 선수 한명을 선택해 주십시오. 해당 선수의 경기 결과에 대    한 뉴스를 생성해 드리겠습니다.\n</P>\n<!-- <div class=\"row\">\n  <div class=\"col s4\" *ngFor=\"let name of players; let i=index\">\n    <div class=\"playerBtn\">\n      {{name}}\n    </div>\n  </div>\n</div> -->\n<div class=\"btnWrapper\">\n  <div class=\"playerBtn\" *ngFor=\"let name of players; let i=index\" (click)=\"setPlayer($event.target)\">\n    {{name}}\n  </div>\n</div>\n<!-- <button class=\"waves-effect waves-light btn\" (click)=\"setPlayer()\">set player</button>\n<button class=\"waves-effect waves-light btn\" (click)=\"setGame()\">set game</button>\n<button class=\"waves-effect waves-light btn\" (click)=\"setGameKind()\">set gameKind</button> -->\n<button class=\"waves-effect waves-light btn\" (click)=\"goNext()\">뉴스 생성하기</button>\n<button class=\"waves-effect waves-light btn\" (click)=\"getNews()\">api!</button>\n"
+module.exports = "<p style=\"font-weight:bold\">\n  관심 선수를 선택해 주십시오.\n</p>\n<P style=\"text-align:left\">\n  조금전 열린 경기에서 다음의 선수들이 경기를 펼쳤습니다. 관심 선수 한명을 선택해 주십시오. 해당 선수의 경기 결과에 대    한 뉴스를 생성해 드리겠습니다.\n</P>\n<!-- <div class=\"row\">\n  <div class=\"col s4\" *ngFor=\"let name of players; let i=index\">\n    <div class=\"playerBtn\">\n      {{name}}\n    </div>\n  </div>\n</div> -->\n<div class=\"btnWrapper\">\n  <div class=\"playerBtn\" *ngFor=\"let name of names; let i=index\" (click)=\"setPlayer($event)\">\n    <span style=\"color:white\">{{name[0]}}</span>\n    <img [src]=\"'assets/flags/'+name[1]+'.png'\" style=\"width:6rem; height:4rem\">\n  </div>\n</div>\n\n<!-- <button class=\"waves-effect waves-light btn\" (click)=\"setPlayer()\">set player</button>\n<button class=\"waves-effect waves-light btn\" (click)=\"setGame()\">set game</button>\n<button class=\"waves-effect waves-light btn\" (click)=\"setGameKind()\">set gameKind</button> -->\n<!-- <button class=\"waves-effect waves-light btn\" (click)=\"goNext()\">뉴스 생성하기</button> -->\n<!-- <button class=\"waves-effect waves-light btn\" (click)=\"getPlayers()\">getplayers</button> -->\n"
 
 /***/ }),
 
@@ -868,16 +926,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var SelectComponent = /** @class */ (function () {
     function SelectComponent(newsService) {
         this.newsService = newsService;
-        this.players = ['Kim', 'Lee', 'James', 'Park', 'Choi', 'Micky', 'Nakamura', 'Bread', 'Alberto']; // dummy
+        this.players_ = {
+            'Kim': 'kor',
+            'Lee': 'kor',
+            'alpine-skiing': 'fin',
+            'Park': 'kor',
+            'Sam': 'gha',
+            'Micky': 'usa',
+            'Nakamura': 'jpn',
+            'Bread': 'nzl',
+            'Alberto': 'pak'
+        }; // dummy
+        this.names = [];
     }
     SelectComponent.prototype.ngOnInit = function () {
+        // this.names = Object.keys(this.players_);
+        this.getPlayers();
     };
-    SelectComponent.prototype.setPlayer = function (el) {
+    SelectComponent.prototype.ngAfterViewInit = function () {
+    };
+    SelectComponent.prototype.setPlayer = function (e) {
+        e.preventDefault();
+        var el = e.target;
+        console.log(el.nodeName, el);
+        if (el.nodeName == 'IMG') {
+            el = el.parentElement; // div node;
+        }
         var playerName = el.innerText;
         __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].player = playerName;
         console.log('set player:', __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].player);
-        var ment = __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].player + " 선수를 선택하셨습니다. 곧 뉴스 생성이 완료됩니다. 다음 화면부터 제공되는 뉴스를 보시고 설문에 응답해주시기 바랍니다. 감사합니다.";
-        Materialize.toast(ment, 4000); // 4000 is the duration of the toast    
+        var ment = __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].player + " 선수를 선택하셨습니다. 곧 뉴스 생성이 완료됩니다. 다음 화면부터 제공되는 뉴스를 보시고 설문에 응답해주시기 바랍니다. 준비되면 '다음'버튼을 눌러주세요.";
+        Materialize.toast(ment, 3000); // 3000 is the duration of the toast    
         // this.goNext();
     };
     SelectComponent.prototype.setGame = function () {
@@ -889,13 +968,40 @@ var SelectComponent = /** @class */ (function () {
         console.log('set gameKind:', __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].gameKind);
     };
     SelectComponent.prototype.goNext = function () {
+        if (!__WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].player) {
+            var ment = '선수를 선택하지 않았습니다. 선수를 선택해 주세요.';
+            Materialize.toast(ment, 3000); // 3000 is the duration of the toast          
+            return;
+        }
         console.log('go to show news!!');
         __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].plusCursor();
     };
-    SelectComponent.prototype.getNews = function () {
-        // this.newsService.getPath(InfoService.player, InfoService.game, InfoService.gameKind).then(path => {
-        //   console.log(path);
-        // });
+    SelectComponent.prototype.getPlayers = function () {
+        var _this = this;
+        this.newsService.getPath(__WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].game, __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].gameKind, 'allList').then(function (res) {
+            var res2 = Array.prototype.slice.call(Object.values(res));
+            var nations = [];
+            // 한국선수 소팅
+            res2 = res2.map(function (r) {
+                r[1] = r[1].toLowerCase();
+                r[2] = r[2] * 1;
+                if (r[1] != 'kor')
+                    r[2] = r[2] + 9000;
+                nations.push(r[1]);
+                return r;
+            });
+            // 종합결과 빼기.
+            if (nations.indexOf('') > 0) {
+                var id_of_all = nations.indexOf('');
+                res2.splice(id_of_all, 1);
+                console.log(id_of_all, res2);
+            }
+            res2.sort(function (a, b) { return a[2] - b[2]; });
+            // 9명까지 선착순
+            console.log(nations);
+            res2 = res2.slice(0, 9);
+            _this.names = res2;
+        });
     };
     SelectComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -920,7 +1026,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, ".qst{\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -ms-flex-pack: distribute;\r\n      justify-content: space-around;\r\n}\r\n\r\n.select{\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: justify;\r\n      -ms-flex-pack: justify;\r\n          justify-content: space-between;\r\n}\r\n\r\npre{\r\n  color: #555;\r\n  font-family: GillSans, Calibri, Trebuchet, sans-serif;\r\n  font-size: .6em;\r\n}", ""]);
+exports.push([module.i, ".qst{\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -ms-flex-pack: distribute;\r\n      justify-content: space-around;\r\n}\r\n\r\n.select{\r\n  display: -webkit-box;\r\n  display: -ms-flexbox;\r\n  display: flex;\r\n  -webkit-box-pack: justify;\r\n      -ms-flex-pack: justify;\r\n          justify-content: space-between;\r\n}\r\n\r\npre{\r\n  color: #555;\r\n  font-family: GillSans, Calibri, Trebuchet, sans-serif;\r\n  font-size: .6em;\r\n}\r\n\r\n.modal{\r\n  width: 90% !important;\r\n}\r\n\r\np{\r\n  padding: 0;\r\n}\r\n\r\nlabel{\r\n  padding-left: 1.6rem !important;\r\n  padding-right: .6rem !important;\r\n}\r\n\r\n.label_s1{\r\n  padding-left: 0 !important;\r\n  padding-right: 0 !important;\r\n}", ""]);
 
 // exports
 
@@ -933,7 +1039,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/news/survey/survey.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<!-- Modal Structure -->\r\n<!-- <div class=\"container\">\r\n<form ngNoForm action=\"http://127.0.0.1:5000/survey\" method=\"post\">\r\n  <div class=\"row\">\r\n  \r\n    <div class=\"col s12\">\r\n      <p>1. 이 뉴스는 신뢰감을 준다.</p>\r\n      <div class=\"qst\">\r\n        <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n          <input class=\"with-gap\" name=\"q1\" type=\"radio\" id=\"test1-{{idx}}\" value=\"{{idx}}\"/>\r\n          <label for=\"test1-{{idx}}\">{{idx}}</label>\r\n        </span>\r\n      </div>\r\n    </div>\r\n    <div class=\"col s12\">\r\n      <p>2. 이 뉴스는 재미있다.</p>\r\n      <div class=\"qst\">      \r\n        <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n          <input class=\"with-gap\" name=\"q2\" type=\"radio\" id=\"test2-{{idx}}\" value=\"{{idx}}\"/>\r\n          <label for=\"test2-{{idx}}\">{{idx}}</label>\r\n        </span>\r\n      </div>\r\n    </div>\r\n    <div class=\"col s12\">\r\n      <p>3. 이 뉴스는 흥미롭다.</p>\r\n      <div class=\"qst\">      \r\n        <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n          <input class=\"with-gap\" name=\"q3\" type=\"radio\" id=\"test3-{{idx}}\" value=\"{{idx}}\"/>\r\n          <label for=\"test3-{{idx}}\">{{idx}}</label>\r\n        </span>\r\n      </div>\r\n    </div>\r\n    <div class=\"col s12\">\r\n      <p>4. 이 뉴스는 부정적이다.</p>\r\n      <div class=\"qst\">\r\n        <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n          <input class=\"with-gap\" name=\"q4\" type=\"radio\" id=\"test4-{{idx}}\" value=\"{{idx}}\"/>\r\n          <label for=\"test4-{{idx}}\">{{idx}}</label>\r\n        </span>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"input-field col s12\">\r\n      <input id=\"s1\" type=\"text\" class=\"validate\" name=\"s1\">\r\n      <label for=\"s1\">5. 어떤 뉴스가 가장 인상이 깊었습니까?</label>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"input-field col s12\">\r\n      <textarea id='s2' name=\"s2\" class=\"materialize-textarea\" data-length=\"100\"></textarea>\r\n      <label for=\"s2\">6. 자유롭게 의견을 적어주세요</label>\r\n    </div>\r\n  </div>\r\n\r\n  <div style=\"text-align:center\">\r\n    <button class=\"btn waves-effect waves-light\" type=\"submit\">제출하기\r\n      <i class=\"material-icons right\">send</i>\r\n    </button>\r\n  </div>\r\n\r\n</form>\r\n</div> -->\r\n<iframe name='ifrm' width='0' height='0' frameborder='0'></iframe>\r\n\r\n<div id=\"modal1\" class=\"modal modal-fixed-footer\">\r\n  <div class=\"modal-content\">\r\n    <form ngNoForm name=\"survey\" method=\"post\">\r\n    <!-- <form ngNoForm name=\"survey\" action=\"http://127.0.0.1:5000/survey\" method=\"post\" target=\"ifrm\"> -->\r\n      <div class=\"row\">\r\n        <div class=\"col s12 select\">\r\n<pre>\r\n전혀 동의하지\r\n않음\r\n</pre>\r\n<pre>뉴스종류: {{newsKind}}, 선수: {{info.player}}, 종목: {{info.game}}, 세부: {{info.gameKind}}</pre>\r\n<pre>\r\n전적으로 \r\n동의\r\n</pre>\r\n        </div>\r\n      \r\n        <div class=\"col s12\">\r\n          <p>1. 이 뉴스는 편향되어 있다(biased)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q1\" type=\"radio\" id=\"test1-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test1-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>2. 이 뉴스는 공정하다(fair)</p>\r\n          <div class=\"qst\">      \r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q2\" type=\"radio\" id=\"test2-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test2-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>3. 이 뉴스는 객관적이다(objective)</p>\r\n          <div class=\"qst\">      \r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q3\" type=\"radio\" id=\"test3-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test3-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>4. 이 뉴스는 지루하다(boring)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q4\" type=\"radio\" id=\"test4-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test4-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>5. 이 뉴스는 즐겁다 (enjoyable)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q5\" type=\"radio\" id=\"test5-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test5-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>6. 이 뉴스는 생생하다(lively)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q6\" type=\"radio\" id=\"test6-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test6-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>7. 이 뉴스는 흥미롭다(interesting)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q7\" type=\"radio\" id=\"test7-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test7-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>8. 이 뉴스는 만족스럽다(pleasing)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q8\" type=\"radio\" id=\"test8-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test8-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>9. 이 뉴스는 명료하다(clear)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q9\" type=\"radio\" id=\"test9-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test9-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>10. 이 뉴스는 일관되다(coherent)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q10\" type=\"radio\" id=\"test10-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test10-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>11. 이 뉴스는 포괄적이다(comprehensive)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q11\" type=\"radio\" id=\"test11-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test11-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>12. 이 뉴스는 간결하다(concise)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q12\" type=\"radio\" id=\"test12-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test12-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>13. 이 뉴스는 잘 쓰여졌다(well-written)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q13\" type=\"radio\" id=\"test13-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test13-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>14. 이 뉴스는 정확하다(accurate)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q14\" type=\"radio\" id=\"test14-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test14-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>15. 이 뉴스는 그럴듯하다(believable)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q15\" type=\"radio\" id=\"test15-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test15-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>16. 이 뉴스는 충격적이다(disturbing)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q16\" type=\"radio\" id=\"test16-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test16-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>17. 이 뉴스는 유익하다(informative)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q17\" type=\"radio\" id=\"test17-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test17-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>18. 이 뉴스는 선정적이다(sensationalistic)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q18\" type=\"radio\" id=\"test18-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test18-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    \r\n      <!-- <div class=\"row\">\r\n        <div class=\"input-field col s12\">\r\n          <input id=\"s1\" type=\"text\" class=\"validate\" name=\"s1\">\r\n          <label for=\"s1\">5. 어떤 뉴스가 가장 인상이 깊었습니까?</label>\r\n        </div>\r\n      </div> -->\r\n    \r\n      <div class=\"row\">\r\n        <div class=\"input-field col s12\">\r\n          <textarea id='s1' name=\"s1\" class=\"materialize-textarea\" data-length=\"100\"></textarea>\r\n          <label for=\"s1\">19. ※ 위 뉴스를 읽고 떠오른 생각이나 느낌을 최대한 자세하게 적어주십시오.</label>\r\n        </div>\r\n      </div>\r\n    \r\n      <!-- <div style=\"text-align:center\">\r\n        <button class=\"btn waves-effect waves-light\" type=\"submit\">제출하기\r\n          <i class=\"material-icons right\">send</i>\r\n        </button>\r\n      </div> -->\r\n    \r\n    </form>\r\n  </div>\r\n\r\n\r\n  <div class=\"modal-footer\">\r\n    <a class=\"modal-action waves-effect waves-green btn-flat \"\r\n    (click)=\"submitSurvey()\" >제출하고 다음 뉴스보기</a>\r\n  </div>\r\n</div>\r\n\r\n<!-- Modal Trigger -->\r\n<div style=\"text-align:center\">\r\n  <!-- <a class=\"waves-effect waves-light btn\" (click)=\"gotoWeb()\">다른 뉴스 보기</a> -->\r\n  <a class=\"waves-effect waves-light btn modal-trigger\" href=\"#modal1\" (click)=\"getInfoService()\">설문 참여하기</a>\r\n  <a id=\"kakao-link-btn\" href=\"javascript:;\">\r\n    <img style=\"width:36px; vertical-align:bottom\" src=\"//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png\"/>\r\n  </a>\r\n</div>"
+module.exports = "<!-- Modal Structure -->\r\n<!-- <div class=\"container\">\r\n<form ngNoForm action=\"http://127.0.0.1:5000/survey\" method=\"post\">\r\n  <div class=\"row\">\r\n  \r\n    <div class=\"col s12\">\r\n      <p>1. 이 뉴스는 신뢰감을 준다.</p>\r\n      <div class=\"qst\">\r\n        <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n          <input class=\"with-gap\" name=\"q1\" type=\"radio\" id=\"test1-{{idx}}\" value=\"{{idx}}\"/>\r\n          <label for=\"test1-{{idx}}\">{{idx}}</label>\r\n        </span>\r\n      </div>\r\n    </div>\r\n    <div class=\"col s12\">\r\n      <p>2. 이 뉴스는 재미있다.</p>\r\n      <div class=\"qst\">      \r\n        <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n          <input class=\"with-gap\" name=\"q2\" type=\"radio\" id=\"test2-{{idx}}\" value=\"{{idx}}\"/>\r\n          <label for=\"test2-{{idx}}\">{{idx}}</label>\r\n        </span>\r\n      </div>\r\n    </div>\r\n    <div class=\"col s12\">\r\n      <p>3. 이 뉴스는 흥미롭다.</p>\r\n      <div class=\"qst\">      \r\n        <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n          <input class=\"with-gap\" name=\"q3\" type=\"radio\" id=\"test3-{{idx}}\" value=\"{{idx}}\"/>\r\n          <label for=\"test3-{{idx}}\">{{idx}}</label>\r\n        </span>\r\n      </div>\r\n    </div>\r\n    <div class=\"col s12\">\r\n      <p>4. 이 뉴스는 부정적이다.</p>\r\n      <div class=\"qst\">\r\n        <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n          <input class=\"with-gap\" name=\"q4\" type=\"radio\" id=\"test4-{{idx}}\" value=\"{{idx}}\"/>\r\n          <label for=\"test4-{{idx}}\">{{idx}}</label>\r\n        </span>\r\n      </div>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"input-field col s12\">\r\n      <input id=\"s1\" type=\"text\" class=\"validate\" name=\"s1\">\r\n      <label for=\"s1\">5. 어떤 뉴스가 가장 인상이 깊었습니까?</label>\r\n    </div>\r\n  </div>\r\n\r\n  <div class=\"row\">\r\n    <div class=\"input-field col s12\">\r\n      <textarea id='s2' name=\"s2\" class=\"materialize-textarea\" data-length=\"100\"></textarea>\r\n      <label for=\"s2\">6. 자유롭게 의견을 적어주세요</label>\r\n    </div>\r\n  </div>\r\n\r\n  <div style=\"text-align:center\">\r\n    <button class=\"btn waves-effect waves-light\" type=\"submit\">제출하기\r\n      <i class=\"material-icons right\">send</i>\r\n    </button>\r\n  </div>\r\n\r\n</form>\r\n</div> -->\r\n<iframe name='ifrm' width='0' height='0' frameborder='0'></iframe>\r\n\r\n<div id=\"modal1\" class=\"modal modal-fixed-footer\">\r\n  <div class=\"modal-content\">\r\n    <form ngNoForm name=\"survey\" method=\"post\">\r\n    <!-- <form ngNoForm name=\"survey\" action=\"http://127.0.0.1:5000/survey\" method=\"post\" target=\"ifrm\"> -->\r\n      <div class=\"row\">\r\n        <div class=\"col s12 select\">\r\n<pre>\r\n전혀 동의하지\r\n않음\r\n</pre>\r\n<!-- <pre>뉴스종류: {{newsKind}}, 선수: {{info.player}}, 종목: {{info.game}}, 세부: {{info.gameKind}}</pre> -->\r\n<pre>\r\n전적으로 \r\n동의\r\n</pre>\r\n        </div>\r\n      \r\n        <div class=\"col s12\">\r\n          <p>1. 이 뉴스는 편향되어 있다(biased)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q1\" type=\"radio\" id=\"test1-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test1-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>2. 이 뉴스는 공정하다(fair)</p>\r\n          <div class=\"qst\">      \r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q2\" type=\"radio\" id=\"test2-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test2-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>3. 이 뉴스는 객관적이다(objective)</p>\r\n          <div class=\"qst\">      \r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q3\" type=\"radio\" id=\"test3-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test3-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>4. 이 뉴스는 지루하다(boring)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q4\" type=\"radio\" id=\"test4-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test4-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>5. 이 뉴스는 즐겁다 (enjoyable)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q5\" type=\"radio\" id=\"test5-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test5-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>6. 이 뉴스는 생생하다(lively)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q6\" type=\"radio\" id=\"test6-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test6-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>7. 이 뉴스는 흥미롭다(interesting)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q7\" type=\"radio\" id=\"test7-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test7-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>8. 이 뉴스는 만족스럽다(pleasing)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q8\" type=\"radio\" id=\"test8-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test8-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>9. 이 뉴스는 명료하다(clear)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q9\" type=\"radio\" id=\"test9-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test9-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>10. 이 뉴스는 일관되다(coherent)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q10\" type=\"radio\" id=\"test10-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test10-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>11. 이 뉴스는 포괄적이다(comprehensive)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q11\" type=\"radio\" id=\"test11-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test11-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>12. 이 뉴스는 간결하다(concise)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q12\" type=\"radio\" id=\"test12-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test12-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>13. 이 뉴스는 잘 쓰여졌다(well-written)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q13\" type=\"radio\" id=\"test13-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test13-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>14. 이 뉴스는 정확하다(accurate)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q14\" type=\"radio\" id=\"test14-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test14-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>15. 이 뉴스는 그럴듯하다(believable)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q15\" type=\"radio\" id=\"test15-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test15-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>16. 이 뉴스는 충격적이다(disturbing)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q16\" type=\"radio\" id=\"test16-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test16-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>17. 이 뉴스는 유익하다(informative)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q17\" type=\"radio\" id=\"test17-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test17-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n        <div class=\"col s12\">\r\n          <p>18. 이 뉴스는 선정적이다(sensationalistic)</p>\r\n          <div class=\"qst\">\r\n            <span *ngFor=\"let idx of [1,2,3,4,5,6,7]\">\r\n              <input class=\"with-gap\" name=\"q18\" type=\"radio\" id=\"test18-{{idx}}\" value=\"{{idx}}\"/>\r\n              <label for=\"test18-{{idx}}\">{{idx}}</label>\r\n            </span>\r\n          </div>\r\n        </div>\r\n      </div>\r\n    \r\n      <!-- <div class=\"row\">\r\n        <div class=\"input-field col s12\">\r\n          <input id=\"s1\" type=\"text\" class=\"validate\" name=\"s1\">\r\n          <label for=\"s1\">5. 어떤 뉴스가 가장 인상이 깊었습니까?</label>\r\n        </div>\r\n      </div> -->\r\n    \r\n      <div class=\"row\">\r\n        <div class=\"input-field col s12\">\r\n          <textarea id='s1' name=\"s1\" class=\"materialize-textarea\" data-length=\"100\"></textarea>\r\n          <label for=\"s1\" class=\"label_s1\">19. ※ 위 뉴스를 읽고 떠오른 생각이나 느낌을 최대한 자세하게 적어주십시오.</label>\r\n        </div>\r\n      </div>\r\n    \r\n    </form>\r\n  </div>\r\n\r\n\r\n  <div class=\"modal-footer\">\r\n    <a class=\"modal-action waves-effect waves-green btn-flat \"\r\n    (click)=\"submitSurvey()\" >제출하고 다음 뉴스보기</a>\r\n  </div>\r\n</div>\r\n\r\n<!-- Modal Trigger -->\r\n<div style=\"text-align:center\">\r\n  <!-- <a class=\"waves-effect waves-light btn\" (click)=\"gotoWeb()\">다른 뉴스 보기</a> -->\r\n  <a *ngIf=\"info.cursor>=2\" class=\"waves-effect waves-light btn modal-trigger\" \r\n    href=\"#modal1\" (click)=\"getInfoService()\">설문 참여하기</a>\r\n  <a *ngIf=\"info.cursor>=1\" class=\"waves-effect waves-light btn modal-trigger\" \r\n    (click)=\"goPrev()\">이전</a>\r\n  <a class=\"waves-effect waves-light btn modal-trigger\" \r\n    (click)=\"goNext()\">다음</a>\r\n  <a *ngIf=\"info.cursor==0\" id=\"kakao-link-btn\" href=\"javascript:;\">\r\n    <img style=\"width:36px; vertical-align:bottom\" src=\"//developers.kakao.com/assets/img/about/logos/kakaolink/kakaolink_btn_medium.png\"/>\r\n  </a>\r\n</div>"
 
 /***/ }),
 
@@ -968,6 +1074,14 @@ var SurveyComponent = /** @class */ (function () {
     SurveyComponent.prototype.ngOnInit = function () {
         // 설문지 모달 선언
         $('.modal').modal();
+        // $('.modal').modal({
+        //   dismissible: true, // Modal can be dismissed by clicking outside of the modal
+        //   opacity: .5, // Opacity of modal background
+        //   inDuration: 300, // Transition in duration
+        //   outDuration: 200, // Transition out duration
+        //   startingTop: '25%', // Starting top style attribute
+        //   endingTop: '25%', // Ending top style attribute
+        // });
         // 카카오링크 버튼을 생성합니다. 처음 한번만 호출하면 됩니다.
         Kakao.init('2c753f4f522f7fbbbad08e5568d9822a');
         Kakao.Link.createDefaultButton({
@@ -1009,11 +1123,11 @@ var SurveyComponent = /** @class */ (function () {
          var host = (port=='4200')? 'http://127.0.0.1:5000' : 'http://'+window.location.host;
          document.forms['survey'].submit();
         */
-        this.getInfoService(); // info 내용 갱신필요
+        // this.getInfoService(); // info 내용 갱신필요
         var queryString = $("form[name=survey]").serialize();
         // form 유효성검사
         if (queryString.split('&').length != 19) {
-            Materialize.toast('설문을 모두 작성해주세요.', 4000); // 4000 is the duration of the toast    
+            Materialize.toast('설문을 모두 작성해주세요.', 3000); // 3000 is the duration of the toast    
             console.log(queryString);
             return;
         }
@@ -1038,7 +1152,7 @@ var SurveyComponent = /** @class */ (function () {
             success: function (data) {
                 $("form[name=survey]").trigger('reset');
                 // Materialize.toast(message, displayLength, className, completeCallback);
-                Materialize.toast('설문이 제출되었습니다.', 4000); // 4000 is the duration of the toast
+                Materialize.toast('설문이 제출되었습니다.', 3000); // 3000 is the duration of the toast
             }
         });
         // http://fruitdev.tistory.com/174
@@ -1059,6 +1173,17 @@ var SurveyComponent = /** @class */ (function () {
         else
             p = '/movieNews';
         window.location.href = host + p;
+    };
+    SurveyComponent.prototype.goNext = function () {
+        console.log('go to the next news!!');
+        __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].plusCursor();
+    };
+    SurveyComponent.prototype.goPrev = function () {
+        console.log('go to the previous news!!');
+        __WEBPACK_IMPORTED_MODULE_3__info_service__["a" /* InfoService */].minusCursor();
+    };
+    SurveyComponent.prototype.ngAfterContentChecked = function () {
+        this.getInfoService(); // info 내용 갱신필요
     };
     SurveyComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
@@ -1084,7 +1209,7 @@ exports = module.exports = __webpack_require__("../../../../css-loader/lib/css-b
 
 
 // module
-exports.push([module.i, "", ""]);
+exports.push([module.i, "#newsBody{\r\n\ttext-align: left;\r\n}\r\n\r\np{\r\n\ttext-align: left;\r\n}", ""]);
 
 // exports
 
@@ -1097,7 +1222,7 @@ module.exports = module.exports.toString();
 /***/ "../../../../../src/news/text-detail/text-detail.component.html":
 /***/ (function(module, exports) {
 
-module.exports = "<div class=\"container\">\r\n  <p style=\"font-weight: bold\">{{newsHeadline}}</p>\r\n  <p>{{newsBody}}</p>\r\n</div>"
+module.exports = "<div class=\"container\">\r\n  <p style=\"font-weight: bold; font-size:18px;\">{{newsHeadline}}</p><br/>\r\n  <!-- <div>{{newsBody}}</div> -->\r\n  <div id='newsBody'></div>\r\n</div>"
 
 /***/ }),
 
@@ -1131,16 +1256,26 @@ var TextDetailComponent = /** @class */ (function () {
     };
     TextDetailComponent.prototype.ngAfterViewInit = function () {
         var _this = this;
-        this.newsService.getPath(__WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].game, __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].gameKind, __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].player).then(function (res) {
+        this.newsKind = __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].newsList[__WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].cursor];
+        // 개인/종합 뉴스 구분... 종합은 player==game name
+        var player = (this.newsKind[this.newsKind.length - 1] == '2') ? __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].game : __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].player;
+        // 개인뉴스 가져오기
+        this.newsService.getPath(__WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].game, __WEBPACK_IMPORTED_MODULE_1__info_service__["a" /* InfoService */].gameKind, player).then(function (res) {
             console.log(res[0]);
             if (res[0]) {
-                _this.newsHeadline = res[0][3];
-                _this.newsBody = res[0][4];
+                // 디비 스키마 변하면 아래 숫자도 바뀜
+                _this.newsHeadline = res[0][5];
+                _this.newsBody = res[0][6];
+                // news body 파싱 및 본문에 삽입
+                _this.newsBody = _this.newsBody.replace(/\.\s/g, '.</p><p>');
+                _this.newsBody = '<p>' + _this.newsBody + '</p>';
+                _this.newsBody += '<br/><p style="font-size:.8rem; opacity:.8">'
+                    + '"이 기사는 서울대학교 융합과학기술대학원 인간중심컴퓨팅연구실에서 개발한 기사 작성 알고리즘 로봇이 경기 종료 직후 실시간으로 작성한 기사입니다."'
+                    + '</p><p style="text-align:right; font-size:.8rem; opacity:.8">'
+                    + '기사제공 NEWS ROBOT' + '</p>';
+                document.getElementById('newsBody').innerHTML = _this.newsBody;
             }
         });
-        // this.newsService.makeTextNews();
-        // this.newsHeadline = this.newsService.newsHeadline;
-        // this.newsBody = this.newsService.newsBody;
     };
     TextDetailComponent = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["n" /* Component */])({
